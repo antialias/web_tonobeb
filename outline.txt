@@ -1,0 +1,36 @@
+client:
+identity
+	as a session ID
+		board id
+		user id
+server:
+	manages boards
+		board id
+		associates session ids with board roles (red / white)
+	negotiates assignment of boards with players
+
+to do:
+
+better layout / fix safari / firefox discrepencies
+
+fix flashing of notification box.
+
+allow the same session to sit at both sides
+email / live play hybrid:
+	game begins with the initiator making a move and sending a challenge notification through e-mail, which has a link to the board on which the challenge was issued.
+
+re-do "start game" process:
+	"wait for an opponent"
+ 		waits for another player to log on. E-mail notifications can be turned on, but the player will have to enter e-mail addresses if needed. "notify by e-mail" check box next to "end turn" button.
+	"start an e-mail based game"
+		immediately takes you to a new board, on which you can make a move.
+		when the move is made, the player can choose to invite an opponent through e-mail, at which point he will have to give e-mail addresses for him and the opponent. e-mails are stored in the "game" class object.
+
+	board design will need a place to ether your e-mail addres. maybe have a player information box that shows e-mail addresses and obfuscated e-mail addresses.
+
+
+audible alert upon opponent move (for real-time play)
+
+note: motionless 1's create problems:
+* they make piecewise undoos practically impossible, though I'm sure this could be figured out mathematically, I don't think it is reasonable to have to implement this unless a really simple solution can be found. This is why I only implemented chronological undos.
+* they also require a spocial condition for checking for four-walling
