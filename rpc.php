@@ -73,11 +73,11 @@ $oldgamestr = serialize($game);
 
 
 if(!file_exists($gamedir."/"."board.".$boardnum.".tonobebboard")) {
-	debug("creating new board");
+    // error_log("creating new board");
 		$theboard = new board($num_pieces);
 		$newboard = true;
 } else {
-	debug("reading board from file");
+    // error_log("reading board from file");
 	$newboard = false;
 	$theboard=unserialize(file_get_contents($gamedir."/"."board.".$boardnum.".tonobebboard"));
 }
@@ -108,9 +108,9 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 		$game->w_email=$_REQUEST['player_email'];
 		$game->r_email=$_REQUEST['opponent_email'];
 		$ret = "gotoboard|".$thegameroom->board_serial;
-		debug("creating a new e-mail based game");
-    debug("game->w_email  = ".$game->w_email."<br />");
-    debug("game->r_email  = ".$game->r_email."<br />");
+	    // error_log("creating a new e-mail based game");
+    // error_log("game->w_email  = ".$game->w_email."<br />");
+    // error_log("game->r_email  = ".$game->r_email."<br />");
 
 	} else if($_REQUEST['action'] == 'findplayer') {
 		if($thegameroom->waiting_session == session_id()) { // if we initiated the challenge
@@ -118,7 +118,7 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 			switch($thegameroom->waiting_status) { // manage the state-machine of accepting a post for challenge, waiting for a challenger, accepting a challenge, and mack to waiting to post a challenge
 			case "accepted":
 				$thegameroom->waiting_status = "posting";
-				debug("someone has accepted my challenge");
+                // error_log("someone has accepted my challenge");
 				$thegameroom->waiting_session = -1; // reset the waiting mechanism
 				$thegameroom->waiting_session_arrival = time();
 				$boardnum = $thegameroom->board_serial;
@@ -163,20 +163,20 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 		switch(session_id()) {
 			case $game->r;
 				$game->r_email = $_REQUEST['email'];
-				debug("updated red's email address");
+			    // error_log("updated red's email address");
 			break;
 			case $game->w;
 				$game->w_email = $_REQUEST['email'];
-				debug("updated white's email address");
+			    // error_log("updated white's email address");
 			break;
 			default:
-				debug("requested email address is not for red or white");
+			    // error_log("requested email address is not for red or white");
 			break;
 		}
 		$ret = "message|set your email address to ".$_REQUEST['email'];
 	} else if(curplayer_session_id() != session_id()) { // if it is not our turn
-		debug("it is not your turn");
-  debug("request action = ".strcmp ('becomecurrentplayer',$_REQUEST['action']));
+	    // error_log("it is not your turn");
+  // error_log("request action = ".strcmp ('becomecurrentplayer',$_REQUEST['action']));
 
 		switch($_REQUEST['action']) {
 		case 'becomecurrentplayer':
@@ -216,43 +216,43 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 			$fw_row = Array(); // them after making sure all other pieces have been moved
 			
 			$opponent = $theboard->get_opponent();
-			debug("opponent = $opponent");
-			debug("you are = $theboard->cur_player");
+		    // error_log("opponent = $opponent");
+		    // error_log("you are = $theboard->cur_player");
 			for($r=0;$r<$theboard->num_rows;++$r) {
 				for($c=0;$c<$theboard->num_cols;++$c) {
 					$p = $theboard->getpiece($c,$r);
 					if($p->getowner() == $theboard->cur_player && $p->status == ' ' && $p->value > 1) {
 						$wall = 0;
 						$l = $c - abs($p->value)+1;
-						debug("l == $l");
+					    // error_log("l == $l");
 						for($cp = $c-1; $cp >= $l; --$cp) { // check spots to the left of the piece
-							debug("cp == $cp");
+						    // error_log("cp == $cp");
 	
 							if($cp >= 0) {
-								debug("if(".$theboard->getpiece($cp,$r)->value." != 0 && ((".$cp." == ".$l.") && (".$theboard->getpiece($cp,$r)->getowner()." != ".$opponent.")))");
+							    // error_log("if(".$theboard->getpiece($cp,$r)->value." != 0 && ((".$cp." == ".$l.") && (".$theboard->getpiece($cp,$r)->getowner()." != ".$opponent.")))");
 								if(!($cp == $l && $theboard->getpiece($cp,$r)->getowner() == $opponent) &&
 								 ($theboard->getpiece($cp,$r)->value !=0)) {
-									++$wall; debug("hit left wall @ $cp,$r");
+									++$wall; error_log("hit left wall @ $cp,$r");
 									break;
 								}
 							} else {
 								++$wall;
-								debug("hit left bounds");
+							    // error_log("hit left bounds");
 								break;
 							}
 						}
 						$l = $c + abs($p->value)-1;
 						for($cp = $c+1; $cp <= $l; ++$cp) { // check spots to the right of the piece
-							debug("cp == $cp");
+						    // error_log("cp == $cp");
 
 							if($cp < $theboard->num_cols) {
 								if(!($cp == $l && $theboard->getpiece($cp,$r)->getowner() == $opponent) &&
 								 ($theboard->getpiece($cp,$r)->value !=0)) {
-									++$wall; debug("hit right wall @ $cp,$r");
+									++$wall; error_log("hit right wall @ $cp,$r");
 									break;
 								}
 							} else {
-								++$wall; debug("hit right bounds with piece $c, $r, $p->value");
+								++$wall; error_log("hit right bounds with piece $c, $r, $p->value");
 								break;
 							}
 						}
@@ -261,11 +261,11 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 							if($rp >= 0) {
 								if(!($rp == $l && $theboard->getpiece($c,$rp)->getowner() == opponent) &&
 								 ($theboard->getpiece($c,$rp)->value != 0)) {
-									++$wall; debug("hit above wall @ $c,$rp");
+									++$wall; error_log("hit above wall @ $c,$rp");
 									break;
 								}
 							} else {
-								++$wall; debug("hit above bounds");
+								++$wall; error_log("hit above bounds");
 								break;
 							}
 						}
@@ -274,19 +274,19 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 							if($rp < $theboard->num_rows) {
 								if(!($rp == $l && $theboard->getpiece($c,$rp)->getowner() == opponent) &&
 								 ($theboard->getpiece($c,$rp)->value != 0)) {
-									++$wall; debug("hit below wall @$c,$rp");
+									++$wall; error_log("hit below wall @$c,$rp");
 									break;
 								}
 							} else {
-								++$wall; debug("hit below bounds");
+								++$wall; error_log("hit below bounds");
 								break;
 							}
 						}
 						if($wall == 4) {
 							$theboard->pieces[$c+$theboard->num_cols*$r]->status = 'F';
-							debug("FOUR WALLED! at $c, $r");
+						    // error_log("FOUR WALLED! at $c, $r");
 						} else {
-							debug("no four-walls: walls == $wall");
+						    // error_log("no four-walls: walls == $wall");
 						}
 					}
 				}
@@ -367,17 +367,18 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 			$headers .= "Return-Path: $from\n";
 
 			$success = mail($to, $subject, $message, $headers, "-f ".$from);
-			if ($success)
-				debug("The email to $to from $from was successfully sent");
-			else
-				debug("An error occurred when sending the email to $to from $from"); 
+			if ($success) {
+			    // error_log("The email to $to from $from was successfully sent");
+			} else {
+			    // error_log("An error occurred when sending the email to $to from $from"); 
+		    }
         
 			
 		break;
 		case "handleboardclick":
-			debug("frompiece->value == ".$frompiece->value."");
+		    // error_log("frompiece->value == ".$frompiece->value."");
 			$fpo = $frompiece->getowner();
-			debug("frompiece->owner == ".$fpo."");
+		    // error_log("frompiece->owner == ".$fpo."");
 			switch($frompiece->getowner()) {
 				case $theboard->cur_player:
 					if($frompiece->status == '*') {// if you click on one of your pieces that you have already moved, rewind moves until that piece has not moved yet.
@@ -394,11 +395,11 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 					togglepiece($fromcol, $fromrow);
 				break;
 			}
-			debug("isset(ret) == ".isset($ret));
+		    // error_log("isset(ret) == ".isset($ret));
 			
 		break;
 		case 'movepiece':
-			debug("moving piece");
+		    // error_log("moving piece");
 			$tocol = $_REQUEST['tocol'];
 			$torow = $_REQUEST['torow'];
 
@@ -450,13 +451,13 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 			}
 			if(isset($ret)) {
 				// the attempted move was illegal
-				debug("the attempted move was illegal");
+			    // error_log("the attempted move was illegal");
 				if($tpo != 'n' && $tpo != $fpo) {
 					// an opponents piece was clicked.
-					debug("an opponent's piece was clicked");
+				    // error_log("an opponent's piece was clicked");
 					togglepiece($tocol, $torow);
 				} else {
-					 debug("an opponent's piece was not clicked");
+					 error_log("an opponent's piece was not clicked");
 				}
 			} else {
 	
@@ -474,8 +475,8 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 			}
 		break;
 		case "undomove":
-			debug("trying to undo");
-			debug("if(".curplayer_session_id()." != ".session_id().")");
+		    // error_log("trying to undo");
+		    // error_log("if(".curplayer_session_id()." != ".session_id().")");
 			if(curplayer_session_id() != session_id()) {
 				$ret=("message|can't take back a move when it's not your turn");
 				break;
@@ -487,7 +488,7 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 			--$game->moveundostack;
 			$theboard = unserialize(file_get_contents($gamedir."/"."undomove.".$game->moveundostack."."."board.".$boardnum.".tonobebboard"));
 
-			debug("undid! - ".$game->moveundostack);
+		    // error_log("undid! - ".$game->moveundostack);
 		break;
 		}
 	}
@@ -496,7 +497,7 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 	$boardchanged=false;
     if($newboard == true || strcmp(serialize($theboard), $oldboardstr) != 0) { // if the board has changed, write it back to disk and save an undo file
 		$boardchanged=true;
-        debug("I am writing a new board to disk");
+        // error_log("I am writing a new board to disk");
 		$game->lastmovetime = time();
         if($_REQUEST['action'] != 'undomove') { // we want to support multiple-undos, so we can't store the undo as a move, otherwise, we would end up undoing our undo if we recorded it.
   
@@ -509,20 +510,21 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
             die("message|cannot write to board file");
 
     } else {
-		debug("the board was not changed, so I don't need to write anything to disk");
+	    // error_log("the board was not changed, so I don't need to write anything to disk");
     }
 	
 	$gamestr = serialize($game);
 	if(strcmp($oldgamestr, $gamestr) != 0) {
-		debug("serializing the game:<br />".$gamestr);
+	    // error_log("serializing the game:<br />".$gamestr);
 		if(!file_put_contents($gamedir."/"."game.".$boardnum.".tonobebgame",$gamestr))
 		    die("message|could not write game details to disk");
-	} else
-		debug("the game state was not changed, so I'm not writing anything to disk");
+	} else {
+	    // error_log("the game state was not changed, so I'm not writing anything to disk");
+    }
 		
-	debug("game['w'] == ".$game->w."");
-	debug("game['r'] == ".$game->r."");
-	debug("session id == ".session_id()."");
+    // error_log("game['w'] == ".$game->w."");
+    // error_log("game['r'] == ".$game->r."");
+    // error_log("session id == ".session_id()."");
 
 	if(session_id() == $game->r) {
 		$reqcolor = "red";
@@ -537,8 +539,9 @@ $oldboardstr = serialize($theboard); // use this board string to detect if anyth
 	if(strcmp($oldgameroomstr, $thegameroomstr) != 0) {
 		if(!file_put_contents($gamedir."/"."gameroom.tonobebgameroom", serialize($thegameroom)))
 			die("message|could not write to gameroom file");
-	} else
-		debug("the gameroom file was not changed, so I don't need to write it back to disk");
+	} else {
+        // error_log("the gameroom file was not changed, so I don't need to write it back to disk");
+	}
 
 	if(isset($ret) && !$boardchanged)
 		echo $ret;

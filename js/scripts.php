@@ -4,7 +4,7 @@ var session='<? echo session_id(); ?>';
 var num_cols=<? echo $num_cols; ?>;
 var num_rows=<? echo $num_rows; ?>;
 var request_page = "<? echo (isset($_REQUEST["page"]) ? $_REQUEST["page"] : ""); ?>";
-var debug = "<? echo (isset($_REQUEST["debug"]) ? $_REQUEST["debug"] : ""); ?>";
+var error_log = "<? echo (isset($_REQUEST["error_log"]) ? $_REQUEST["error_log"] : ""); ?>";
 var boardnum = <? if(isset($_REQUEST['boardnum'])) echo $_REQUEST['boardnum']; else echo "-1"; ?>;
 var creation_state =<? if(isset($_REQUEST['creation_state'])) echo '"'.$_REQUEST['creation_state'].'"'; else echo "-1";?>;
 var movepiece={"row":-1,"col":-1};
@@ -20,7 +20,7 @@ function trimString (str) {
 }
 
 function createRequestObject() {
-	if(debug)
+	if(error_log)
 		if(document.getElementById("makero"))
       document.getElementById("makero").innerHTML="made httprequest";
 	var ro;
@@ -41,8 +41,8 @@ function sndReq(params) {
 		http.onreadystatechange = function () {}; // IE doesn't like this to be set to a non-function.
 		http.abort();
 		++colisions;
-		if(debug)
-			document.getElementById("debug").innerHTML="XMLRequests have collided "+colisions+" times.";
+		if(error_log)
+			document.getElementById("error_log").innerHTML="XMLRequests have collided "+colisions+" times.";
 	}
     isBusy = true;
 	
@@ -80,8 +80,8 @@ function updateboard_func() {
 		boardreq.onreadystatechange = function () {};  // IE doesn't like this to be set to a non-function.
 		boardreq.abort();
 		++colisions;
-		if(debug)
-			document.getElementById("debug").innerHTML="XMLRequests have collided "+colisions+" times.";
+		if(error_log)
+			document.getElementById("error_log").innerHTML="XMLRequests have collided "+colisions+" times.";
 	}
     updateboard_busy = true;
     
@@ -205,8 +205,8 @@ function handleResponse() {
                 document.getElementById("message").innerHTML="beginning regular board updates, as recommended by server";
             break;
             case "board":
-				if(debug)
-					document.getElementById("debug").innerHTML="received board update from server";
+				if(error_log)
+					document.getElementById("error_log").innerHTML="received board update from server";
 
 				updateboard_func()
 				movepiece.row=-1;
@@ -214,7 +214,7 @@ function handleResponse() {
             break;
 			case "keepwaiting":
 				document.getElementById("message").innerHTML="Challenge posted "+update[1]+" seconds ago<br />"+
-					"Get a buddy to go to <a href = 'http://tonobeb.com/?page=findplayer'>tonobeb.com</a> to start this game.";
+					"Get a buddy to go to <a href = 'http://<?=$_SERVER['SERVER_NAME']?>/?page=findplayer'>tonobeb.com</a> to start this game.";
 				setTimeout('findPlayer()',1000);
 			break;
       case "movepiece":

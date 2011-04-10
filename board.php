@@ -46,10 +46,10 @@ switch($_REQUEST['creation_state']) {
     echo "<h1>Tonobeb</h1>";
     
     echo "<div class='info'>";
-     debug("<div id = 'debug'></div>"); 
-     debug("<div id = 'response'></div>"); 
-     debug("<div id = 'makero'>did we make a request object?</div>"); 
-     debug("</div>"); 
+     // error_log("<div id = 'error_log'></div>"); 
+     // error_log("<div id = 'response'></div>"); 
+     // error_log("<div id = 'makero'>did we make a request object?</div>"); 
+     // error_log("</div>"); 
     
     echo "<div id = 'boardnum_msg'>Board number: <span id = \"boardnum\">unknown</span>. <a style=\"float:right;\" href = \"javascript:window.location='?page=board&boardnum='+boardnum\">Reload</a></div>";
     echo "<div id = 'curplayermsg'>Now Playing: <span id = \"curplayer\">undefined</span>. <span style=\"float:right;\"><a href = \"javascript:becomecurrentplayer()\">Become current player</a> <a href = \"javascript:beginfindplayer()\">new game</a></style></div>";

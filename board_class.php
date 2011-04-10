@@ -1,6 +1,5 @@
 <?php
 
-
 class boardpiece {
 	function boardpiece($value) {
 		$this->value = $value;
@@ -16,7 +15,7 @@ class boardpiece {
 				$this->value *= -1;
 	}
 	function getowner() {
-		debug("thispiece->value == ".$this->value);
+        // error_log("thispiece->value == ".$this->value);
 		if($this->value > 0)
 			return 'w';
 		else if($this->value < 0)
@@ -42,7 +41,7 @@ function togglepiece($col, $row) {
 
 
 	$curpiece = $theboard->getpiece($col, $row);
-	debug("curpiece->status == ".$curpiece->status);
+    // error_log("curpiece->status == ".$curpiece->status);
 	switch($curpiece->status) {
 	case 'x': $newstatus = 'c'; break;
 	case 'c': $newstatus = ' '; break;
@@ -68,8 +67,8 @@ function togglepiece($col, $row) {
 	if($numkillers <2)
 		$ret=("message|numkillers = $numkillers - opponent's piece must be surrounded by two or more of your pieces to be killed or captured");
 	else {
-		debug("yes, this piece can be killed or captured");
-		debug("status change : ".$theboard->pieces[$col+$num_cols*$row]->status." = ".$newstatus);
+	    // error_log("yes, this piece can be killed or captured");
+	    // error_log("status change : ".$theboard->pieces[$col+$num_cols*$row]->status." = ".$newstatus);
 
 		$theboard->pieces[$col+$num_cols*$row]->status = $newstatus;
 		$theboard->pieces[$col+$num_cols*$row]->value = $curpiece->value;
@@ -100,12 +99,12 @@ class board {
 	
 	function getpiece($col, $row) {
 		if($col < 0 || $col >= $this->num_cols || $row < 0 || $row >= $this->num_rows) {
-			debug("the requested piece: $col,$row, was out of bounds");
+		    // error_log("the requested piece: $col,$row, was out of bounds");
 			return new boardpiece("0");
 		}
 			
-		debug("getting piece: ".$col.$row." == ".$this->pieces[$col+$this->num_cols*$row]);
-		debug("I am using this board: ".$this->tostring());
+	    // error_log("getting piece: ".$col.$row." == ".print_r($this->pieces[$col+$this->num_cols*$row],true));
+	    // error_log("I am using this board: ".print_r($this,true));
 
 		return $this->pieces[$col + $this->num_cols * $row];
 	}

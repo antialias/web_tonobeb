@@ -109,7 +109,7 @@ echo "</ul>";
 break;
 }
 
-debug("your session id is: ".session_id()); // don't reference this by $PHPSESSID because it won't be set for the first time the page loads for a new session.
+// error_log("your session id is: ".session_id()); // don't reference this by $PHPSESSID because it won't be set for the first time the page loads for a new session.
 
 switch($_REQUEST["page"]) {
 case "board":

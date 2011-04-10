@@ -19,9 +19,9 @@ class board {
 	}
 	
 	function getpiece($col, $row) {
-		if($debug) echo "getting piece: ".$row.$col." == ".$this->pieces[$col+$this->num_cols*$row]."<br />";
-		if($debug) echo "I am using this board: ".$this->tostring()."<br />";
-		if($debug) echo "I am using this piece array: ".serialize($this->pieces).". <br />";
+		if($error_log) echo "getting piece: ".$row.$col." == ".$this->pieces[$col+$this->num_cols*$row]."<br />";
+		if($error_log) echo "I am using this board: ".$this->tostring()."<br />";
+		if($error_log) echo "I am using this piece array: ".serialize($this->pieces).". <br />";
 		if($col < 0 || $col > $this->num_cols || $row < 0 || $row > $this->num_rows)
 			$p = "0";
 		else

@@ -35,7 +35,7 @@ Click the board to start a new game<br />
 
 */
 
-echo "<iframe width = 404 height = 430 src = 'http://tonobeb.com/?page=board&creation_state=findplayer'></iframe>";
+echo "<iframe width = 404 height = 430 src = 'http://".$_SERVER['SERVER_NAME']."/?page=board&creation_state=findplayer'></iframe>";
 
 ?>
 

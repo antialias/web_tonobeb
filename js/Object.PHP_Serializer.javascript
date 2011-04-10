@@ -50,7 +50,7 @@
  * @site		www.devpro.it
  * @date                2005/11/26
  * @lastmod             2005/12/15 12:50 [faster unserialize for IE browser]
- * @credits		Special thanks to Fabio Sutto for some ideas and some debug
+ * @credits		Special thanks to Fabio Sutto for some ideas and some error_log
  *			Special thanks to kentaromiura for a faster loop idea while unserialize
  * @version             1.6, tested on FireFox 1.0.7, FireFox 1.5, IE 6 SP2 and Opera 8
  */
